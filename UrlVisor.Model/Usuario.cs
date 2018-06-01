@@ -12,6 +12,7 @@ namespace UrlVisor.Model
 
         public bool Borrado { get; set; }
 
-        public IEnumerable<Pagina> Paginas { get; set; }
+        public string Token { get; set; }
+        public DateTime FechaToken { get; set; }
     }
 }

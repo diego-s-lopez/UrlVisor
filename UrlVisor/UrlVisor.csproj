@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
@@ -20,6 +21,20 @@
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Content Remove="ClientApp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\components\Login.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UrlVisor.Bussiness\UrlVisor.Bussiness.csproj" />
+    <ProjectReference Include="..\UrlVisor.DataAccess\UrlVisor.DataAccess.csproj" />
+    <ProjectReference Include="..\UrlVisor.Model\UrlVisor.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\components\Login.tsx" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UrlVisor.DataAccess\UrlVisor.DataAccess.csproj" />
     <ProjectReference Include="..\UrlVisor.Model\UrlVisor.Model.csproj" />
   </ItemGroup>
 
