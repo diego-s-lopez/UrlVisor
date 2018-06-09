@@ -55,8 +55,12 @@ namespace UrlVisor.DataAccess
         public JsonConfiguracionUsuarioRepository(IOptions<AppSettings> opt)
         {
             _opt = opt ?? throw new ArgumentNullException(nameof(opt));
+
+            if (!File.Exists(_opt.Value.JsonDbUsuarios))
+                File.Create(_opt.Value.JsonDbUsuarios);
+
             var textConfig = File.ReadAllText(_opt.Value.JsonDbConfiguracion);
-            var confgList = JsonConvert.DeserializeObject<ConfiguracionUsuario[]>(textConfig).ToList();
+            var confgList = !string.IsNullOrEmpty(textConfig) ? JsonConvert.DeserializeObject<ConfiguracionUsuario[]>(textConfig).ToList() : new List<ConfiguracionUsuario>();
             _dataById = confgList.ToDictionary(x => x.Id, v => v);
         }
 

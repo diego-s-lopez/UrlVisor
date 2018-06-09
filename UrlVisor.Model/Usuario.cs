@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,7 +13,9 @@ namespace UrlVisor.Model
 
         public bool Borrado { get; set; }
 
+        [JsonIgnore]
         public string Token { get; set; }
+        [JsonIgnore]
         public DateTime FechaToken { get; set; }
     }
 }

@@ -37,6 +37,8 @@ namespace UrlVisor.DataAccess
                     _dataByUserName[obj.User] = obj;
                 }
                 else throw new ArgumentException("Usuario desconocido");
+
+                CommitChanges();
             }
         }
 
@@ -52,6 +54,7 @@ namespace UrlVisor.DataAccess
         {
             obj.Borrado = true;
             Save(obj);
+            CommitChanges();
         }
 
         public override Usuario GetByUserName(string usuario)
@@ -62,11 +65,24 @@ namespace UrlVisor.DataAccess
                 return null;
         }
 
+        private void CommitChanges()
+        {
+            lock (_saveLock)
+            {
+                var text = JsonConvert.SerializeObject(_dataById.Values);
+                File.WriteAllText(_opt.Value.JsonDbUsuarios, text);
+            }
+        }
+
         public JsonUsuarioRepository(IOptions<AppSettings> opt)
         {
             _opt = opt ??throw new ArgumentNullException(nameof(opt));
+
+            if (!File.Exists(_opt.Value.JsonDbUsuarios))
+                File.Create(_opt.Value.JsonDbUsuarios);
+
             var textUsuarios = File.ReadAllText(_opt.Value.JsonDbUsuarios);
-            var userLists = JsonConvert.DeserializeObject<Usuario[]>(textUsuarios).ToList();
+            var userLists = !string.IsNullOrEmpty(textUsuarios)? JsonConvert.DeserializeObject<Usuario[]>(textUsuarios).ToList() : new List<Usuario>();
             _dataById = userLists.ToDictionary(x => x.Id, v => v);
             _dataByUserName = userLists.ToDictionary(x => x.User, v => v);
         }
@@ -74,6 +90,7 @@ namespace UrlVisor.DataAccess
         private readonly Dictionary<int, Usuario> _dataById;
         private readonly Dictionary<string, Usuario> _dataByUserName;
         private readonly IOptions<AppSettings> _opt;
-        
+
+        private object _saveLock = new object();
     }
 }
