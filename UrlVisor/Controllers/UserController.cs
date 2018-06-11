@@ -47,6 +47,7 @@ namespace UrlVisor.Controllers
         [Route("Create")]        
         public IActionResult CreateUser(UserDataViewModel userData)
         {
+
             try
             {
                 var user = _userAdmin.CreateUser(userData.Usuario, userData.Password, userData.PasswordRepeated);
